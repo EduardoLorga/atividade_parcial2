@@ -12,9 +12,15 @@ const Dashboard = () => {
     const fetchRegistrations = async () => {
         try {
             const res = await axios.get('/utilizador/inscricoes');
-            setRegistrations(res.data);
+            if (Array.isArray(res.data)) {
+                setRegistrations(res.data);
+            } else {
+                setRegistrations([]);
+                console.error("Unexpected response format for registrations:", res.data);
+            }
         } catch (error) {
             console.error('Error fetching registrations:', error);
+            setRegistrations([]);
         }
     };
 

@@ -13,8 +13,14 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         const savedUser = localStorage.getItem('user');
         if (token && savedUser) {
-            setUser(JSON.parse(savedUser));
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            try {
+                setUser(JSON.parse(savedUser));
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            } catch (e) {
+                console.error("Failed to parse user from local storage", e);
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+            }
         }
         setLoading(false);
     }, []);
@@ -22,12 +28,16 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const res = await axios.post('/utilizadores/login', { email, password });
-            const { token, user } = res.data;
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            setUser(user);
-            return { success: true };
+            if (res.data && res.data.token && res.data.user) {
+                const { token, user } = res.data;
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(user));
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                setUser(user);
+                return { success: true };
+            } else {
+                return { success: false, error: 'Invalid response from server' };
+            }
         } catch (error) {
             return { success: false, error: error.response?.data?.error || 'Login failed' };
         }
@@ -36,12 +46,16 @@ export const AuthProvider = ({ children }) => {
     const register = async (name, email, password) => {
         try {
             const res = await axios.post('/utilizadores/registo', { name, email, password });
-            const { token, user } = res.data;
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            setUser(user);
-            return { success: true };
+            if (res.data && res.data.token && res.data.user) {
+                const { token, user } = res.data;
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(user));
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                setUser(user);
+                return { success: true };
+            } else {
+                return { success: false, error: 'Invalid response from server' };
+            }
         } catch (error) {
             return { success: false, error: error.response?.data?.error || 'Registration failed' };
         }
