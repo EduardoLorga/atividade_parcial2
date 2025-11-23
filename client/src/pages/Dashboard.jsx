@@ -11,7 +11,7 @@ const Dashboard = () => {
 
     const fetchRegistrations = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/utilizador/inscricoes');
+            const res = await axios.get('/utilizador/inscricoes');
             setRegistrations(res.data);
         } catch (error) {
             console.error('Error fetching registrations:', error);
@@ -21,7 +21,7 @@ const Dashboard = () => {
     const handleCancel = async (registrationId) => {
         if (!confirm('Tem a certeza que deseja cancelar esta inscrição?')) return;
         try {
-            await axios.delete(`http://localhost:3000/inscricoes/${registrationId}`);
+            await axios.delete(`/inscricoes/${registrationId}`);
             setRegistrations(registrations.filter(reg => reg.registration_id !== registrationId));
         } catch (error) {
             console.error('Error cancelling registration:', error);

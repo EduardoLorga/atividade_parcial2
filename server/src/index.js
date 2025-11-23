@@ -28,6 +28,10 @@ app.use('/', userRoutes);             // /utilizador/inscricoes, /inscricoes/:id
 // userRoutes handles /utilizador/inscricoes and /inscricoes/:id.
 // This is a bit split. I'll mount userRoutes at / to handle both paths defined in the router.
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;

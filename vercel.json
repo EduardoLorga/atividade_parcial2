@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/utilizadores/:path*",
+            "destination": "/server/src/index.js"
+        },
+        {
+            "source": "/eventos/:path*",
+            "destination": "/server/src/index.js"
+        },
+        {
+            "source": "/utilizador/:path*",
+            "destination": "/server/src/index.js"
+        },
+        {
+            "source": "/inscricoes/:path*",
+            "destination": "/server/src/index.js"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/client/index.html"
+        }
+    ]
+}

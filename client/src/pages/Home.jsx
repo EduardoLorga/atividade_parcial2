@@ -15,7 +15,7 @@ const Home = () => {
 
     const fetchEvents = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/eventos');
+            const res = await axios.get('/eventos');
             setEvents(res.data);
         } catch (error) {
             console.error('Error fetching events:', error);
@@ -32,7 +32,7 @@ const Home = () => {
         }
         try {
             console.log('Sending request to server...');
-            const res = await axios.post(`http://localhost:3000/eventos/${eventId}/inscrever`);
+            const res = await axios.post(`/eventos/${eventId}/inscrever`);
             console.log('Subscription response:', res.data);
             alert('Inscrição realizada com sucesso!');
         } catch (error) {
